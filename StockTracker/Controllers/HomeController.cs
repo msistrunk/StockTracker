@@ -13,7 +13,7 @@ namespace StockTracker.Controllers
         public ActionResult Index()
         {
             List<Stock> customers = new List<Stock>();
-            string filePath = "/Users/mitchellrsistrunk/Documents/Apps/StockTracker/StockTracker/Data/NBRHistory.csv";
+            string filePath = "/Users/mitchellrsistrunk/Documents/Apps/NBRHistory.csv";
 
 
             //Read the contents of CSV file.
