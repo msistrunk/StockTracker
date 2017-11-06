@@ -1,0 +1,127 @@
+﻿@section extraheader{
+<script>
+
+    </script>
+}
+
+@using StockTracker.Models
+@model IEnumerable<Stock>
+
+@{
+    var currentProfit = Model.Last().Price - 5.60;
+    var i = 1;
+}
+
+
+<div class = "container">
+
+    <h2 style = "font-family: Unica One">$NBR $@string.Format("{0:n2}", Model.Last().Price) - PROFIT $@string.Format("{0:n2}", currentProfit)</h2>
+    <div class="btn-group">
+        <button class="btn btn-primary" onclick="NBRTodayFunction()">Today</button>      
+        <button class="btn btn-primary" onclick="NBRHistoryFunction()">History</button>
+    </div>
+    <div id="myDiv"></div>
+</div>
+
+
+<!-- JS stuff -->
+<script type ="text/javascript">
+    var price = [];
+    var date = [];
+    var NBRHistory = [];
+    var NBRHistoryPrice = [];
+    
+    @foreach (Stock stock in Model)
+    {
+        @:NBRHistoryPrice.push("@stock.Price");
+        @:NBRHistory.push("@stock.Date");
+        DateTime myDate;
+        i += 1;
+    
+        if (!DateTime.TryParse(stock.Date, out myDate))
+        {
+            Console.WriteLine("it broke");
+        }
+        else{
+            //DateTime enteredDate = DateTime.Parse(stock.Date);
+            if(myDate.Date == DateTime.Today)
+            {
+                @:price.push("@stock.Price");
+                @:date.push("@stock.Date");
+            }
+        }
+    }
+
+    var data = [
+      {
+        x: date,
+        y: price,
+        type: 'scatter',
+        mode: "lines"
+      }
+    ];
+
+    var NBRHistoryGraph = [
+        {
+            x: NBRHistory,
+            y: NBRHistoryPrice,
+            type: 'scatter',
+            connectgaps: true
+        }];
+
+        var NBRtodaylayout = {
+            autosize: false,
+            width: 500,
+            height: 400,
+            margin: {
+                l: 50,
+                r: 50,
+                b: 100,
+                t: 100,
+                pad: 4
+            }};
+    
+    var NBRHistorylayout = {
+        xaxis:{
+            autorange:true,
+            showgrid:false,
+            zeroline:false,
+            showline:false,
+            autotick:true,
+            showticklabels:false,
+            type:"category"
+        },
+        autosize: false,
+        width: 500,
+        height: 400,
+        margin: {
+            l: 50,
+            r: 50,
+            b: 100,
+            t: 100,
+            pad: 4
+        }
+    };
+    
+    Plotly.newPlot('myDiv', data, NBRtodaylayout, {displayModeBar: false});
+    /*Plotly.newPlot('NBRHistory', NBRHistoryGraph, NBRHistorylayout, {displayModeBar: false});*/
+    /*window.onload = function() {
+        var NBRTodayradio = document.getElementById('Today');
+        NBRTodayradio.onclick = NBRToday;
+
+        var NBRHistoryradio = document.getElementById('History');
+        NBRHistoryradio.onclick=NBRHistory;
+    };*/
+
+    function NBRTodayFunction(){
+        Plotly.newPlot('myDiv', data, NBRtodaylayout, {displayModeBar: false});
+        Plotly.redraw('myDiv');
+    };
+    
+    function NBRHistoryFunction(){
+        Plotly.newPlot('myDiv', NBRHistoryGraph, NBRHistorylayout, {displayModeBar: false});
+        Plotly.redraw('myDiv');
+    };
+
+        
+</script>
