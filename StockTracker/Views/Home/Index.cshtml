@@ -10,12 +10,13 @@
 @{
     var currentProfit = Model.Last().Price - 5.60;
     var i = 1;
+    var percentageGain = (Model.Last().Price / 5.60) * 100 - 100;
 }
 
 
 <div class = "container">
 
-    <h2 style = "font-family: Unica One">$NBR $@string.Format("{0:n2}", Model.Last().Price) - PROFIT $@string.Format("{0:n2}", currentProfit)</h2>
+    <h2 style = "font-family: Unica One">$NBR $@string.Format("{0:n2}", Model.Last().Price) - PROFIT $@string.Format("{0:n2}", currentProfit) %@string.Format("{0:n2}", percentageGain)</h2>
     <div class="btn-group">
         <button class="btn btn-primary" onclick="NBRTodayFunction()">Today</button>      
         <button class="btn btn-primary" onclick="NBRHistoryFunction()">History</button>
