@@ -44,7 +44,6 @@
             Console.WriteLine("it broke");
         }
         else{
-            //DateTime enteredDate = DateTime.Parse(stock.Date);
             if(myDate.Date == DateTime.Today)
             {
                 @:price.push("@stock.Price");
@@ -104,22 +103,27 @@
         }
     };
     
-    Plotly.newPlot('myDiv', data, NBRtodaylayout, {displayModeBar: false});
-    /*Plotly.newPlot('NBRHistory', NBRHistoryGraph, NBRHistorylayout, {displayModeBar: false});*/
-    /*window.onload = function() {
-        var NBRTodayradio = document.getElementById('Today');
-        NBRTodayradio.onclick = NBRToday;
-
-        var NBRHistoryradio = document.getElementById('History');
-        NBRHistoryradio.onclick=NBRHistory;
-    };*/
+    Plotly.newPlot('myDiv', NBRHistoryGraph, NBRHistorylayout, {displayModeBar: false});
 
     function NBRTodayFunction(){
-        Plotly.newPlot('myDiv', data, NBRtodaylayout, {displayModeBar: false});
-        Plotly.redraw('myDiv');
+        var now = new Date();
+        var hours = now.getHours();
+
+        if(hours >= 9 && hours <=23) {
+            Plotly.newPlot('myDiv', data, NBRtodaylayout, {displayModeBar: false});
+            Plotly.redraw('myDiv');
+        }
+        else{
+            Plotly.purge(myDiv);
+            $('#myDiv').empty();
+            var theDiv = document.getElementById("myDiv");
+            var content = document.createTextNode("Data not yet available for today.");
+            theDiv.appendChild(content);
+        }
     };
     
     function NBRHistoryFunction(){
+        $('#myDiv').empty();
         Plotly.newPlot('myDiv', NBRHistoryGraph, NBRHistorylayout, {displayModeBar: false});
         Plotly.redraw('myDiv');
     };
