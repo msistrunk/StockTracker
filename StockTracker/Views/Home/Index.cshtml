@@ -41,6 +41,7 @@
     
         if (!DateTime.TryParse(stock.Date, out myDate))
         {
+            Console.WriteLine(stock.Date);
             Console.WriteLine("it broke");
         }
         else{
